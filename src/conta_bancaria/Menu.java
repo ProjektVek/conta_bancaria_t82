@@ -2,7 +2,7 @@ package conta_bancaria;
 
 import java.util.Scanner;
 
-import conta_bancaria.model.Conta;
+import conta_bancaria.model.ContaPoupanca;
 import conta_bancaria.util.Cores;
 
 public class Menu {
@@ -16,6 +16,10 @@ public class Menu {
 		String corTextoNormal = Cores.TEXT_WHITE_BOLD_BRIGHT;
 		String corTextoDestaque = Cores.TEXT_GREEN_BOLD_BRIGHT;
 		String amareloBrazil = Cores.TEXT_YELLOW_BOLD_BRIGHT;
+		
+		ContaPoupanca conta1 = new ContaPoupanca(01, 34, 2, "Samuel", 50000, 13);
+		
+		conta1.visualizar();
 		
 		while(true) {
 			
@@ -49,8 +53,11 @@ public class Menu {
 				opcao = leia.nextInt();
 				System.out.printf("%s╚══════════════════════════════╝                     %n", corMoldura);
 				
-				if(opcao==9)
+				if(opcao==9) {
+					leia.close();
 					finalizar();
+				}
+					
 				
 				switch(opcao) {
 				case 1:
@@ -116,7 +123,6 @@ public class Menu {
 	
 	public static void sobre() {
 		
-		String corBackground = Cores.ANSI_BLACK_BACKGROUND;
 		String corMoldura = Cores.TEXT_PURPLE_BOLD_BRIGHT;
 		String corTextoNormal = Cores.TEXT_WHITE_BOLD_BRIGHT;
 		String corTextoDestaque = Cores.TEXT_GREEN_BOLD_BRIGHT;
@@ -136,7 +142,6 @@ public class Menu {
 	
 	public static void finalizar() {
 		
-		String corBackground = Cores.ANSI_BLACK_BACKGROUND;
 		String corMoldura = Cores.TEXT_PURPLE_BOLD_BRIGHT;
 		String corTextoNormal = Cores.TEXT_WHITE_BOLD_BRIGHT;
 		String corTextoDestaque = Cores.TEXT_GREEN_BOLD_BRIGHT;

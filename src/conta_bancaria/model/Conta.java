@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import conta_bancaria.util.Cores;
 
-public class Conta {
+public abstract class Conta {
 	
 	//Cores
 	public String corBackground = Cores.ANSI_BLACK_BACKGROUND;
