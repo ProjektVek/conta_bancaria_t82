@@ -1,7 +1,10 @@
 package conta_bancaria;
 
+import java.io.IOException;
 import java.util.Scanner;
 
+import conta_bancaria.controller.ContaController;
+import conta_bancaria.model.ContaCorrente;
 import conta_bancaria.model.ContaPoupanca;
 import conta_bancaria.util.Cores;
 
@@ -11,15 +14,22 @@ public class Menu {
 		
 		Scanner leia = new Scanner(System.in);
 		
+		ContaController contas = new ContaController();
+		
+		int numero, agencia, tipo, aniversario;
+		String titular;
+		double saldo, limite;
+		
 		String corBackground = Cores.ANSI_BLACK_BACKGROUND;
 		String corMoldura = Cores.TEXT_PURPLE_BOLD_BRIGHT;
 		String corTextoNormal = Cores.TEXT_WHITE_BOLD_BRIGHT;
 		String corTextoDestaque = Cores.TEXT_GREEN_BOLD_BRIGHT;
 		String amareloBrazil = Cores.TEXT_YELLOW_BOLD_BRIGHT;
 		
-		ContaPoupanca conta1 = new ContaPoupanca(01, 34, 2, "Samuel", 50000, 13);
-		
-		conta1.visualizar();
+		ContaCorrente cc1 = new ContaCorrente(contas.gerarNumero(), 123, 1, "João da Silva", 1000.00f, 100.00f);
+		contas.cadastrar(cc1);
+		ContaPoupanca cp1 = new ContaPoupanca(contas.gerarNumero(), 123, 2, "Maria da Silva", 1000.00f, 12);
+		contas.cadastrar(cp1);
 		
 		while(true) {
 			
@@ -62,56 +72,99 @@ public class Menu {
 				switch(opcao) {
 				case 1:
 					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
-					System.out.printf("%s║  %sCriar Conta                         %s║             %n", corMoldura, corTextoNormal, corMoldura);
-					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					System.out.printf("%s║           %sCriar Conta                %s║             %n", corMoldura, corTextoNormal, corMoldura);
+					System.out.printf("%s╠══════════════════════════════════════╣             %n", corMoldura);
+					
+					System.out.printf("%s║ %sDigite o número da Agência:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					agencia = leia.nextInt();
+
+					System.out.printf("%s║ %sDigite o nome do Titular:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					leia.skip("\\R");
+					titular = leia.nextLine();
+
+					System.out.printf("%s║ %sDigite o tipo da Conta (1 - CC | 2 - CP):%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					tipo = leia.nextInt();
+
+					System.out.printf("%s║ %sDigite o saldo inicial da conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					saldo = leia.nextDouble();
+
+					switch(tipo) {
+						case 1 -> {
+							System.out.printf("%s║ %sDigite o limite da conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+							limite = leia.nextDouble();
+							System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+							contas.cadastrar(new ContaCorrente(contas.gerarNumero(), agencia, tipo, titular, saldo, limite));
+						}
+						case 2 -> {
+							System.out.printf("%s║ %sDigite o dia do aniversário da conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+							aniversario = leia.nextInt();
+							System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+							contas.cadastrar(new ContaPoupanca(contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
+						}
+					}
+					
+					keyPress();
 					break;
 
 				case 2:
 					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
 					System.out.printf("%s║  %sListar todas as Contas              %s║             %n", corMoldura, corTextoNormal, corMoldura);
 					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					keyPress();
 					break;
 
 				case 3:
-					System.out.printf("%s╔═════════════════════════════════════════╗          %n", corMoldura);
-					System.out.printf("%s║  %sConsultar dados da Conta - por número  %s║          %n", corMoldura, corTextoNormal, corMoldura);
-					System.out.printf("%s╚═════════════════════════════════════════╝          %n", corMoldura);
+					System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+					System.out.printf("%s║        %sConsultar dados da Conta - por número%s      ║%n", corMoldura, corTextoNormal, corMoldura);
+					System.out.printf("%s╠═══════════════════════════════════════════════════╣%n", corMoldura);
+					System.out.printf("%s║ %sDigite o número da Conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					numero = leia.nextInt();
+					System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+					
+					contas.procurarPorNumero(numero);
+					keyPress();
 					break;
 
 				case 4:
 					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
 					System.out.printf("%s║  %sAtualizar dados da Conta            %s║             %n", corMoldura, corTextoNormal, corMoldura);
 					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					keyPress();
 					break;
 
 				case 5:
 					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
 					System.out.printf("%s║  %sApagar a Conta                      %s║             %n", corMoldura, corTextoNormal, corMoldura);
 					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					keyPress();
 					break;
 
 				case 6:
 					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
 					System.out.printf("%s║  %sSaque                               %s║             %n", corMoldura, corTextoNormal, corMoldura);
 					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					keyPress();
 					break;
 
 				case 7:
 					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
 					System.out.printf("%s║  %sDepósito                            %s║             %n", corMoldura, corTextoNormal, corMoldura);
 					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					keyPress();
 					break;
 
 				case 8:
 					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
 					System.out.printf("%s║  %sTransferência entre Contas          %s║             %n", corMoldura, corTextoNormal, corMoldura);
 					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					keyPress();
 					break;
 
 				default:
 					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
 					System.out.printf("%s║  %sOpção inválida! Digite novamente!   %s║             %n", corMoldura, corTextoNormal, corMoldura);
 					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					keyPress();
 					break;
 
 				}
@@ -138,6 +191,20 @@ public class Menu {
 		System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
 
 		
+	}
+	
+	public static void keyPress() {
+		String corMoldura = Cores.TEXT_PURPLE_BOLD_BRIGHT;
+		String corTextoNormal = Cores.TEXT_WHITE_BOLD_BRIGHT;
+		
+		try {
+			System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+			System.out.printf("%s║        %sPressione Enter para Continuar...%s          ║%n", corMoldura, corTextoNormal, corMoldura);
+			System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+			System.in.read();
+		} catch (IOException e) {
+			System.err.println("Ocorreu um erro ao ler o teclado!");
+		}
 	}
 	
 	public static void finalizar() {
