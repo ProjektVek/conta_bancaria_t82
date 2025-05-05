@@ -1,9 +1,11 @@
 package conta_bancaria;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import conta_bancaria.controller.ContaController;
+import conta_bancaria.model.Conta;
 import conta_bancaria.model.ContaCorrente;
 import conta_bancaria.model.ContaPoupanca;
 import conta_bancaria.util.Cores;
@@ -126,16 +128,66 @@ public class Menu {
 					break;
 
 				case 4:
-					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
-					System.out.printf("%s║  %sAtualizar dados da Conta            %s║             %n", corMoldura, corTextoNormal, corMoldura);
-					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+					System.out.printf("%s║                   %sAtualizar conta%s                 ║%n", corMoldura, corTextoNormal, corMoldura);
+					System.out.printf("%s╠═══════════════════════════════════════════════════╣%n", corMoldura);
+					System.out.printf("%s║ %sDigite o número da Conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					numero = leia.nextInt();
+					System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+					
+					Optional<Conta> conta = contas.buscarNaCollection(numero);
+					
+					if(conta.isPresent()) {
+						System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+						System.out.printf("%s║ %sDigite o número da Agência:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+						agencia = leia.nextInt();
+
+						System.out.printf("%s║ %sDigite o nome do Titular:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+						leia.skip("\\R");
+						titular = leia.nextLine();
+
+						System.out.printf("%s║ %sDigite o tipo da Conta (1 - CC | 2 - CP):%s ", corMoldura, corTextoNormal, corTextoDestaque);
+						tipo = leia.nextInt();
+
+						System.out.printf("%s║ %sDigite o saldo inicial da conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+						saldo = leia.nextDouble();
+						
+						switch(tipo) {
+						case 1 -> {
+							System.out.printf("%s║ %sDigite o limite da conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+							limite = leia.nextDouble();
+							System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+							contas.atualizar(new ContaCorrente(conta.get().getNumero(), agencia, tipo, titular, saldo, limite));
+						}
+						case 2 -> {
+							System.out.printf("%s║ %sDigite o dia do aniversário da conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+							aniversario = leia.nextInt();
+							System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+							contas.atualizar(new ContaPoupanca(conta.get().getNumero(), agencia, tipo, titular, saldo, aniversario));
+						}
+					}
+						
+					} else {
+						System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+						System.out.printf("%s║            %sA conta %d não foi encontada!      %s   ║%n", corMoldura, corTextoNormal, numero, corMoldura);
+						System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+					}
+					
+
+					
 					keyPress();
 					break;
 
 				case 5:
-					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
-					System.out.printf("%s║  %sApagar a Conta                      %s║             %n", corMoldura, corTextoNormal, corMoldura);
-					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+					System.out.printf("%s║        %sApagar a Conta%s                             ║%n", corMoldura, corTextoNormal, corMoldura);
+					System.out.printf("%s╠═══════════════════════════════════════════════════╣%n", corMoldura);
+					System.out.printf("%s║ %sDigite o número da Conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					numero = leia.nextInt();
+					System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+					
+					contas.deletar(numero);
+					
 					keyPress();
 					break;
 
