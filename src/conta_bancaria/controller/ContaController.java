@@ -94,20 +94,68 @@ public class ContaController implements ContaRepository {
 	}
 
 	@Override
-	public void sacar(int numero, float valor) {
-		// TODO Auto-generated method stub
+	public void sacar(int numero, double valor) {
+		String corMoldura = Cores.TEXT_PURPLE_BOLD_BRIGHT;
+		String corTextoNormal = Cores.TEXT_WHITE_BOLD_BRIGHT;
+		
+		Optional<Conta> conta = buscarNaCollection(numero);
+		
+		if(conta.isPresent()) {
+			if(conta.get().sacar(valor) == true) {
+				System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+				System.out.printf("%s║      %sO saque foi efetuado com sucesso!        %s    ║%n", corMoldura, corTextoNormal, corMoldura);
+				System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+			}
+		} else {
+				System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+				System.out.printf("%s║        %sA conta %d não foi encontada!          %s     ║%n", corMoldura, corTextoNormal, numero, corMoldura);
+				System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+		}
 		
 	}
 
 	@Override
-	public void depositar(int numero, float valor) {
-		// TODO Auto-generated method stub
+	public void depositar(int numero, double valor) {
+		String corMoldura = Cores.TEXT_PURPLE_BOLD_BRIGHT;
+		String corTextoNormal = Cores.TEXT_WHITE_BOLD_BRIGHT;
+		
+		Optional<Conta> conta = buscarNaCollection(numero);
+		
+		if(conta.isPresent()) {
+		conta.get().depositar(valor);
+				System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+				System.out.printf("%s║      %sO depósito foi efetuado com sucesso!     %s    ║%n", corMoldura, corTextoNormal, corMoldura);
+				System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+		} else {
+				System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+				System.out.printf("%s║        %sA conta %d não foi encontada!          %s     ║%n", corMoldura, corTextoNormal, numero, corMoldura);
+				System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+		}
 		
 	}
 
 	@Override
-	public void transferir(int numeroOrigem, int numeroDestino, float valor) {
-		// TODO Auto-generated method stub
+	public void transferir(int numeroOrigem, int numeroDestino, double valor) {
+		String corMoldura = Cores.TEXT_PURPLE_BOLD_BRIGHT;
+		String corTextoNormal = Cores.TEXT_WHITE_BOLD_BRIGHT;
+		
+		Optional<Conta> contaOrigem = buscarNaCollection(numeroOrigem);
+		Optional<Conta> contaDestino = buscarNaCollection(numeroDestino);
+		
+		if(contaOrigem.isPresent() && contaDestino.isPresent()) {
+		
+			if(contaOrigem.get().sacar(valor) == true) {
+				contaDestino.get().depositar(valor);
+				System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+				System.out.printf("%s║     %sA transferência foi realizada com sucesso! %s   ║%n", corMoldura, corTextoNormal, corMoldura);
+				System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+			}
+			
+		} else {
+				System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+				System.out.printf("%s║        %sUma das contas não foi encontada!          %s ║%n", corMoldura, corTextoNormal, corMoldura);
+				System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+		}
 		
 	}
 

@@ -20,7 +20,7 @@ public class Menu {
 		
 		int numero, agencia, tipo, aniversario;
 		String titular;
-		double saldo, limite;
+		double saldo, limite, valor;
 		
 		String corBackground = Cores.ANSI_BLACK_BACKGROUND;
 		String corMoldura = Cores.TEXT_PURPLE_BOLD_BRIGHT;
@@ -109,9 +109,12 @@ public class Menu {
 					break;
 
 				case 2:
-					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
-					System.out.printf("%s║  %sListar todas as Contas              %s║             %n", corMoldura, corTextoNormal, corMoldura);
-					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+					System.out.printf("%s║               %sListar todas as Contas              %s║%n", corMoldura, corTextoNormal, corMoldura);
+					System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+					
+					contas.listarTodas();
+					
 					keyPress();
 					break;
 
@@ -156,7 +159,7 @@ public class Menu {
 						case 1 -> {
 							System.out.printf("%s║ %sDigite o limite da conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
 							limite = leia.nextDouble();
-							System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+							System.out.printf("%s╚════════════════════════════════════════════════╝%n", corMoldura);
 							contas.atualizar(new ContaCorrente(conta.get().getNumero(), agencia, tipo, titular, saldo, limite));
 						}
 						case 2 -> {
@@ -192,23 +195,58 @@ public class Menu {
 					break;
 
 				case 6:
-					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
-					System.out.printf("%s║  %sSaque                               %s║             %n", corMoldura, corTextoNormal, corMoldura);
-					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+					System.out.printf("%s║                 %sSacar%s                             ║%n", corMoldura, corTextoNormal, corMoldura);
+					System.out.printf("%s╠═══════════════════════════════════════════════════╣%n", corMoldura);
+					
+					System.out.printf("%s║ %sDigite o número da Conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					numero = leia.nextInt();
+					
+					System.out.printf("%s║ %sDigite o valor do saque:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					valor = leia.nextDouble();
+					
+					System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+					
+					contas.sacar(numero, valor);
+					
 					keyPress();
 					break;
 
 				case 7:
-					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
-					System.out.printf("%s║  %sDepósito                            %s║             %n", corMoldura, corTextoNormal, corMoldura);
-					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+					System.out.printf("%s║                 %sDepositar%s                         ║%n", corMoldura, corTextoNormal, corMoldura);
+					System.out.printf("%s╠═══════════════════════════════════════════════════╣%n", corMoldura);
+					
+					System.out.printf("%s║ %sDigite o número da Conta:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					numero = leia.nextInt();
+					
+					System.out.printf("%s║ %sDigite o valor do depósito:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					valor = leia.nextDouble();
+					
+					System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+					
+					contas.depositar(numero, valor);
+					
 					keyPress();
 					break;
 
 				case 8:
-					System.out.printf("%s╔══════════════════════════════════════╗             %n", corMoldura);
-					System.out.printf("%s║  %sTransferência entre Contas          %s║             %n", corMoldura, corTextoNormal, corMoldura);
-					System.out.printf("%s╚══════════════════════════════════════╝             %n", corMoldura);
+					System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+					System.out.printf("%s║                 %sTranferência%s                      ║%n", corMoldura, corTextoNormal, corMoldura);
+					System.out.printf("%s╠═══════════════════════════════════════════════════╣%n", corMoldura);
+					
+					System.out.printf("%s║ %sDigite o número da Conta de Origem:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					int numeroOrigem = leia.nextInt();
+					
+					System.out.printf("%s║ %sDigite o número da Conta de Destino:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					int numeroDestino = leia.nextInt();
+					
+					System.out.printf("%s║ %sDigite o valor do depósito:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					valor = leia.nextDouble();
+					
+					System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+					
+					contas.transferir(numeroOrigem, numeroDestino, valor);
 					keyPress();
 					break;
 
