@@ -1,7 +1,9 @@
 package conta_bancaria.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import conta_bancaria.model.Conta;
 import conta_bancaria.repository.ContaRepository;
@@ -36,6 +38,27 @@ public class ContaController implements ContaRepository {
 		for(var conta : listaContas) {
 			conta.visualizar();
 		}
+		
+	}
+	
+
+	@Override
+	public void listarPorTitular(String titular) {
+		String corMoldura = Cores.TEXT_PURPLE_BOLD_BRIGHT;
+		String corTextoNormal = Cores.TEXT_WHITE_BOLD_BRIGHT;
+		
+		List<Conta> listaTitulares = listaContas.stream()
+				.filter(c -> c.getTitular().toUpperCase().contains(titular.toUpperCase()))
+				.collect(Collectors.toList());
+		
+		if(listaTitulares.isEmpty()){
+			System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+			System.out.printf("%s║        %sNenhuma conta foi encontrada!%s              ║%n", corMoldura, corTextoNormal, corMoldura);
+			System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+		}
+		
+		for(var conta : listaTitulares)
+			conta.visualizar();
 		
 	}
 

@@ -51,7 +51,8 @@ public class Menu {
 			System.out.printf("%s║%s           %s6%s - Sacar                               %s║%n", corMoldura, corTextoNormal, corTextoDestaque, corTextoNormal, corMoldura);
 			System.out.printf("%s║%s           %s7%s - Depositar                           %s║%n", corMoldura, corTextoNormal, corTextoDestaque, corTextoNormal, corMoldura);
 			System.out.printf("%s║%s           %s8%s - Transferir Valores entre Contas     %s║%n", corMoldura, corTextoNormal, corTextoDestaque, corTextoNormal, corMoldura);
-			System.out.printf("%s║%s           %s9%s - Sair                                %s║%n", corMoldura, corTextoNormal, corTextoDestaque, corTextoNormal, corMoldura);
+			System.out.printf("%s║%s           %s9%s - Listar Por Titular                  %s║%n", corMoldura, corTextoNormal, corTextoDestaque, corTextoNormal, corMoldura);
+			System.out.printf("%s║%s           %s0%s - Sair                                %s║%n", corMoldura, corTextoNormal, corTextoDestaque, corTextoNormal, corMoldura);
 			System.out.printf("%s║                                                   ║%n", corMoldura);
 			System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
 
@@ -65,7 +66,7 @@ public class Menu {
 				opcao = leia.nextInt();
 				System.out.printf("%s╚══════════════════════════════╝                     %n", corMoldura);
 				
-				if(opcao==9) {
+				if(opcao==0) {
 					leia.close();
 					finalizar();
 				}
@@ -247,6 +248,20 @@ public class Menu {
 					System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
 					
 					contas.transferir(numeroOrigem, numeroDestino, valor);
+					keyPress();
+					break;
+					
+				case 9:
+					System.out.printf("%s╔═══════════════════════════════════════════════════╗%n", corMoldura);
+					System.out.printf("%s║            %sListar conta por titular%s               ║%n", corMoldura, corTextoNormal, corMoldura);
+					System.out.printf("%s╠═══════════════════════════════════════════════════╣%n", corMoldura);
+					System.out.printf("%s║ %sDigite o nome do titular:%s ", corMoldura, corTextoNormal, corTextoDestaque);
+					leia.skip("\\R");
+					titular = leia.nextLine();
+					System.out.printf("%s╚═══════════════════════════════════════════════════╝%n", corMoldura);
+					
+					contas.listarPorTitular(titular);
+					
 					keyPress();
 					break;
 
